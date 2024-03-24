@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +38,7 @@ public class UserController {
         return Result.success(list,"查询成功");
     }
 
+
     @PostMapping("/login")
     public Result<Map<String,Object>> login(@RequestBody User user){
         Map<String,Object> data = userService.login(user);
@@ -66,9 +66,9 @@ public class UserController {
 
     @GetMapping("/list")
     public Result<Map<String,Object>> getUserList(@RequestParam(value = "username",required = false) String username,
-                                              @RequestParam(value = "phone",required = false) String phone,
-                                              @RequestParam(value = "pageNo") Long pageNo,
-                                              @RequestParam(value = "pageSize") Long pageSize){
+                                                  @RequestParam(value = "phone",required = false) String phone,
+                                                  @RequestParam(value = "pageNo") Long pageNo,
+                                                  @RequestParam(value = "pageSize") Long pageSize){
 
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(StringUtils.hasLength(username),User::getUsername,username);
@@ -89,27 +89,26 @@ public class UserController {
     @PostMapping
     public Result<?> addUser(@RequestBody User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.save(user);
+        userService.addUser(user);
         return Result.success("新增用户成功");
     }
 
     @PutMapping
     public Result<?> updateUser(@RequestBody User user){
         user.setPassword(null);
-        userService.updateById(user);
+        userService.updateUser(user);
         return Result.success("修改用户成功");
     }
 
     @GetMapping("/{id}")
     public Result<User> getUserById(@PathVariable("id") Integer id){
-        User user = userService.getById(id);
+        User user = userService.getUserById(id);
         return Result.success(user);
     }
 
     @DeleteMapping("/{id}")
     public Result<User> deleteUserById(@PathVariable("id") Integer id){
-        userService.removeById(id);
+        userService.deleteUserById(id);
         return Result.success("删除用户成功");
     }
-
 }

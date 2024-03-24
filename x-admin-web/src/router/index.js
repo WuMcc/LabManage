@@ -55,60 +55,74 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/sys',
-    component: Layout,
-    redirect: '/sys/user',
-    name: 'sysManage',
-    meta: { title: '系统管理', icon: 'sys' },
-    children: [
-      {
-        path: 'user',
-        name: 'user',
-        component: () => import('@/views/sys/user'),
-        meta: { title: '用户管理', icon: 'userManage' }
-      },
-      {
-        path: 'role',
-        name: 'role',
-        component: () => import('@/views/sys/role'),
-        meta: { title: '角色管理', icon: 'roleManage' }
-      }
-    ]
-  },
 
-  {
-    path: '/test',
-    component: Layout,
-    redirect: '/test/test1',
-    name: 'test',
-    meta: { title: '测试模块', icon: 'form' },
-    children: [
-      {
-        path: 'test1',
-        name: 'test1',
-        component: () => import('@/views/test/test1'),
-        meta: { title: '功能点一', icon: 'form' }
-      },
-      {
-        path: 'test2',
-        name: 'test2',
-        component: () => import('@/views/test/test2'),
-        meta: { title: '功能点二', icon: 'form' }
-      },
-      {
-        path: 'test3',
-        name: 'test3',
-        component: () => import('@/views/test/test3'),
-        meta: { title: '功能点三', icon: 'form' }
-      },
-    ]
-  },
 
-  
+  // {
+  //   path: '/sys',
+  //   component: Layout,
+  //   redirect: '/sys/user',
+  //   name: 'sysManage',
+  //   meta: { title: '平台管理', icon: 'sys' },
+  //   children: [
+  //     {
+  //       path: 'userInfo',
+  //       name: 'userInfo',
+  //       component: () => import('@/views/sys/userinfo.vue'),
+  //       meta: { title: '用户信息', icon: 'userManage' }
+  //     },
+  //     {
+  //       path: 'user',
+  //       name: 'user',
+  //       component: () => import('@/views/sys/user'),
+  //       meta: { title: '用户管理', icon: 'roleManage' }
+  //     },
+  //     {
+  //       path: 'role',
+  //       name: 'role',
+  //       component: () => import('@/views/sys/role'),
+  //       meta: { title: '角色管理', icon: 'roleManage' }
+  //     }
+  //   ]
+  // },
 
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // {
+  //   path: '/labe',
+  //   component: Layout,
+  //   redirect: '/labe/lab',
+  //   name: 'lab',
+  //   meta: { title: '实验管理', icon: 'form' },
+  //   children: [
+  //     {
+  //       path: 'lab',
+  //       name: 'lab',
+  //       component: () => import('@/views/labe/lab'),
+  //       meta: { title: '实验室管理', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'device',
+  //       name: 'device',
+  //       component: () => import('@/views/labe/device'),
+  //       meta: { title: '设备管理', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'borrowlab',
+  //       name: 'borrowlab',
+  //       component: () => import('@/views/labe/borrowlab'),
+  //       meta: { title: '预约实验室', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'borrowdev',
+  //       name: 'borrowdev',
+  //       component: () => import('@/views/labe/borrowdev'),
+  //       meta: { title: '预约设备', icon: 'form' }
+  //     },
+  //   ]
+  // },
+
+
+
+  // // 404 page must be placed at the end !!!
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({

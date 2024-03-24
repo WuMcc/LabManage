@@ -1,9 +1,9 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="sizeForm" :model="sizeForm" :rules="rules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">欢迎使用神盾局特工管理系统</h3>
+        <h3 class="title">欢迎使用实验室管理系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -12,7 +12,7 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="sizeForm.username"
           placeholder="用户名"
           name="username"
           type="text"
@@ -28,7 +28,7 @@
         <el-input
           :key="passwordType"
           ref="password"
-          v-model="loginForm.password"
+          v-model="sizeForm.password"
           :type="passwordType"
           placeholder="密码"
           name="password"
@@ -42,6 +42,10 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 录</el-button>
+      <el-form-item label="选择登录角色" prop="roleId">
+          <el-radio v-model="sizeForm.roleId"  label="0" @change="change">管理员</el-radio>
+        <el-radio v-model="sizeForm.roleId"  label="1" @change="change">师生</el-radio>
+      </el-form-item>
 
     </el-form>
   </div>
@@ -49,12 +53,16 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { Radio } from 'element-ui'
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (value == 0){
+        callback(new Error('用户名不能为空'))
+      }
+      else if (!validUsername(value)) {
         callback(new Error('请输入正确的用户名'))
       } else {
         callback()
@@ -67,18 +75,37 @@ export default {
         callback()
       }
     }
+    //需删除
     return {
-      loginForm: {
-        username: 'admin',
-        password: '123456'
+      sizeForm: {
+        username: '',
+        password: '',
+        delivery: false,
+        roleId:'',
+        type: [],
       },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      rules: {
+        username: [{ required: true, trigger: 'blur', validator: validateUsername },],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword },],
+        resource: [{ required: true, trigger: 'change', message: "请选择登陆的用户角色！" }],
+        roleId: [{ required: true, trigger: 'blur', message: "请选择登陆的用户角色！"}]
       },
+      // loginForm: {
+      //   username: 'admin',
+      //   password: '123456'
+      // },
+      // loginRules: {
+      //   username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+      //   password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+      //   resource: [{ required: true, trigger: 'change', message: "请选择登陆的用户角色！" }]
+      // },
+      // chooseUser: [
+      //   { label: "管理员", value: '' },
+      //   { label: "师生", value: '' }
+      // ],
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: '/dashboard'
     }
   },
   watch: {
@@ -90,6 +117,9 @@ export default {
     }
   },
   methods: {
+    change(){
+      console.log(this.Radio)
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -101,20 +131,58 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.sizeForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
+        if(this.sizeForm.roleId==0&&this.sizeForm.username=="admin")
+          {
+            this.loading = true
+            this.$store.dispatch('user/login', this.sizeForm).then(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false
           })
-        } else {
+        }else if(this.sizeForm.roleId==1&&this.sizeForm.username!="admin"){
+          this.loading = true
+          this.$store.dispatch('user/login', this.sizeForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+        }
+        } else if(this.sizeForm.roleId==0&&this.sizeForm.username!="admin"){
+          return this.$message({
+            message: '请选择账号对应的角色！',
+            type: 'warning'
+          })  
+        }else{
           console.log('error submit!!')
           return false
         }
+
       })
+    //   //注册功能
+    //   this.$axios.post(this.$httpUrl + '/user/login', this.sizeForm).then(res => res.data).then(res => {
+    //     console.log(res)
+    //     //登陆成功后，跳转到相应页面
+    //     if (res.code === 20000) {
+    //       if (this.sizeForm.roleId==0){
+    //         window.location.href = "admin/index";
+    //       }else if(this.sizeForm.roleId==1) {
+    //         window.location.href = "/index";
+    //       }
+    //     } else if(res.code === 20001){
+    //       alert("该账号未注册")//注册失败，返回注册页面
+    //     }else{
+    //       alert("密码错误")
+    //     }
+    //   })
+    // },
+    // register () {
+    //   //指定跳转的地址
+    //   this.$router.replace('/Register')
+    // }
     }
   }
 }
@@ -239,3 +307,4 @@ $light_gray:#eee;
   }
 }
 </style>
+

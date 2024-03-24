@@ -11,13 +11,8 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              个人信息
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="http://www.baidu.com">
-            <el-dropdown-item>公司主页</el-dropdown-item>
+          <a target="_blank" href="https://www.snut.edu.cn/">
+            <el-dropdown-item>学校主页</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">注销</span>
@@ -50,7 +45,9 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      await this.$store.dispatch('tagsView/delAllViews')
+      sessionStorage.removeItem('tabViews')
+      this.$router.push(`/login`)
     }
   }
 }

@@ -24,6 +24,9 @@ public class Result<T> {
     public static <T> Result<T> success(T data,String message){
         return new Result<>(20000,message,data);
     }
+    public static <T> Result<T> success(Integer code, T data,String message){
+        return new Result<>(code,message,data);
+    }
 
     public static <T> Result<T> success(String message){
         return new Result<>(20000,message,null);

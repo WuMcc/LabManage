@@ -10,16 +10,16 @@ public class CodeGenerator {
     public static void main(String[] args) {
         String url = "jdbc:mysql:///xdb";
         String username = "root";
-        String password = "123456";
+        String password = "mysql";
         String moduleName = "sys";
-        String mapperLocation = "C:\\Users\\dacai\\Desktop\\神盾局特工管理系统\\源码\\x-admin\\src\\main\\resources\\mapper\\" + moduleName;
-        String tables = "x_user,x_role,x_menu,x_user_role,x_role_menu";
+        String mapperLocation = "C:\\idea\\项目\\x-admin-project\\x-admin\\src\\main\\resources\\mapper\\" + moduleName;
+        String tables = "x_lab";
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
                     builder.author("laocai") // 设置作者
                             //.enableSwagger() // 开启 swagger 模式
                             //.fileOverride() // 覆盖已生成文件
-                            .outputDir("C:\\Users\\dacai\\Desktop\\神盾局特工管理系统\\源码\\x-admin\\src\\main\\java"); // 指定输出目录
+                            .outputDir("C:\\idea\\项目\\x-admin-project\\x-admin\\src\\main\\java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.lantu") // 设置父包名
